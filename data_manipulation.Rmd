@@ -76,10 +76,37 @@ filter(pups_df, sex == 1)
 filter(pups_df, pd_walk < 11, sex == 2)
 ```
 ## 'mutate'
+```{r}
+```
 
 
+```{r}
+```
+
+
+```{r}
+```
 ## 'arrange'
+```{r}
+```
 
+
+## 'piping'
+```{r}
+litters_df = (
+  read_csv("data/FAS_litters.csv", na = c("", ".", "NA")) |>  
+    janitor::clean_names() |> 
+    select(-pups_born_alive) |> 
+    filter(group == "Con7") |> 
+    mutate(
+      weight_gain = gd18_weight - gd0_weight
+    )
+)
+```
+
+
+```{r}
+```
 
 
 
