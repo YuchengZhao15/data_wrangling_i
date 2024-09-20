@@ -96,16 +96,27 @@ filter(pups_df, pd_walk < 11, sex == 2)
 litters_df = (
   read_csv("data/FAS_litters.csv", na = c("", ".", "NA")) |>  
     janitor::clean_names() |> 
-    select(-pups_born_alive) |> 
-    filter(group == "Con7") |> 
     mutate(
       weight_gain = gd18_weight - gd0_weight
-    )
+    ) |> 
+    lm(weight_gain ~ pups_born_alive, data = _)
 )
 ```
 
-
+## 'Export'
 ```{r}
+litters_df = (
+  read_csv("data/FAS_litters.csv", na = c("", ".", "NA")) |>  
+    janitor::clean_names() |> 
+    mutate(
+      weight_gain = gd18_weight - gd0_weight,
+      group = str_to_lower(group)
+    ) |> 
+    filter(group == "con7") |> 
+    select(-pups_born_alive)
+)
+
+write_csv(litters_df, "data/cleaned_FAS_litters.csv")
 ```
 
 
