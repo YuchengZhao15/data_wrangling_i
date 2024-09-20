@@ -12,6 +12,85 @@ library(tidyverse)
 This document will show how to *manipulate* data.
 
 
+Import the 2 datasets that we're going to manipulate
+```{r}
+litters_df = (
+  read_csv("data/FAS_litters.csv", na = c("NA", "", "."))
+)
+```
+
 
 ```{r}
+litters_df = janitor::clean_names(litters_df)
+litters_df
 ```
+
+
+
+```{r}
+pups_df = read_csv(
+  "data/FAS_pups.csv", na = c("", "NA", ".")
+)
+
+pups_df = janitor::clean_names(pups_df)
+```
+## 'select'
+
+Use select to select variables
+```{r}
+select(litters_df, group, litter_number, gd0_weight)
+```
+
+```{r}
+select(litters_df, group:gd18_weight)
+```
+```{r}
+select(litters_df, -pups_survive)
+```
+```{r}
+select(litters_df, -(group:gd18_weight))
+```
+```{r}
+select(litters_df, starts_with("pups"))
+```
+```{r}
+select(litters_df, litter_number, gd0_weight, everything())
+```
+```{r}
+select(pups_df, litter_number, sex, pd_ears)
+```
+
+
+## 'filter'
+```{r}
+filter(litters_df, pups_dead_birth >= 1)
+```
+```{r}
+filter(litters_df, group %in% c("Con8", "Con7"), pups_born_alive == 8)
+```
+```{r}
+filter(pups_df, sex == 1)
+```
+
+```{r}
+filter(pups_df, pd_walk < 11, sex == 2)
+```
+## 'mutate'
+
+
+## 'arrange'
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+```
+
+
