@@ -50,3 +50,60 @@ litters_df =
 ``` r
 view(litters_df)
 ```
+
+## Pivot wider
+
+make up an analysis result table.
+
+``` r
+analysis_df = 
+  tibble(
+    group = c("treatment", "treatment", "control", "control"),
+    time = c("pre", "post", "pre", "post"),
+    mean = c(4, 10, 4.2, 5)
+  )
+```
+
+pivot wider for human readability
+
+``` r
+analysis_df |> 
+  pivot_wider(
+    names_from = time,
+    values_from = mean
+  ) |> 
+  knitr::kable()
+```
+
+| group     | pre | post |
+|:----------|----:|-----:|
+| treatment | 4.0 |   10 |
+| control   | 4.2 |    5 |
+
+## Bind table
+
+``` r
+fellowship_ring = 
+  read_excel("data/lotR_words.xlsx", range = "B3:D6") |> 
+  mutate(movie = "fellowship_ring")
+
+two_towers = 
+  read_excel("data/lotR_words.xlsx", range = "F3:H6") |> 
+  mutate(movie = "two_towers")
+
+return_king  = 
+  read_excel("data/lotR_words.xlsx", range = "J3:L6") |> 
+  mutate(movie = "return_king")
+
+
+lotr_df = 
+  bind_rows(fellowship_ring, two_towers, return_king) |> 
+  janitor::clean_names() |> 
+  pivot_longer(
+    cols = female:male,
+    names_to = "sex",
+    values_to = "words"
+  ) |> 
+  relocate(movie) |> 
+    mutate(race = str_to_lower(race))
+```
